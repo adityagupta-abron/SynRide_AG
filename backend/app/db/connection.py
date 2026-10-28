@@ -26,6 +26,10 @@ def init_db_pool() -> oracledb.ConnectionPool:
     if _pool is None:
         try:
             logger.info("Initializing Oracle connection pool to %s:%s/%s...", settings.DB_HOST, settings.DB_PORT, settings.DB_SERVICE)
+            def init_session(conn, tag):
+                if getattr(settings, 'DB_SCHEMA', None):
+                    conn.current_schema = settings.DB_SCHEMA
+
             _pool = oracledb.create_pool(
                 user=settings.DB_USER,
                 password=settings.DB_PASSWORD,
@@ -34,7 +38,8 @@ def init_db_pool() -> oracledb.ConnectionPool:
                 service_name=settings.DB_SERVICE,
                 min=settings.DB_POOL_MIN,
                 max=settings.DB_POOL_MAX,
-                increment=1
+                increment=1,
+                session_callback=init_session
             )
             logger.info("Oracle connection pool initialized successfully.")
         except Exception as e:
@@ -58,6 +63,8 @@ def get_db_connection() -> Generator[oracledb.Connection, None, None]:
     """Yields a connection from the pool, ensuring it is always returned."""
     pool = init_db_pool()
     conn = pool.acquire()
+    if getattr(settings, 'DB_SCHEMA', None) and conn.current_schema != settings.DB_SCHEMA:
+        conn.current_schema = settings.DB_SCHEMA
     try:
         yield conn
     finally:

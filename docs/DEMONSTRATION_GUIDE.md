@@ -24,9 +24,9 @@ This guide provides a step-by-step demonstration walkthrough for viva examinatio
 ```powershell
 cd c:\Users\HP\Desktop\SynRide\SynRide_AG\backend
 # (Activate python environment if using venv)
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8005 --reload
 ```
-- API Docs live at: `http://127.0.0.1:8000/docs`
+- API Docs live at: `http://127.0.0.1:8005/docs`
 
 ### Terminal 2: Vite React Frontend
 ```powershell

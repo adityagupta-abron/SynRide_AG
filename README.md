@@ -20,7 +20,7 @@
                                          │
                                          ▼ HTTP / JSON REST
                                FastAPI Backend (Python 3.12)
-                                 (Port 8000 / Uvicorn)
+                                 (Port 8005 / Uvicorn)
                                          │
                                          ▼ python-oracledb (Native Thin Mode)
                             Oracle AI Database 26ai Free
@@ -45,7 +45,7 @@
 7. **Concurrency Control & Row Locking:** `SELECT ... FOR UPDATE` row locks inside `JOIN_RIDE_GROUP` preventing race conditions from exceeding the 3-passenger limit.
 8. **Transaction Isolation:** Multi-step atomic transactions using Python context managers (`get_db_transaction()`).
 9. **Exact Fare Allocation Mathematics:** Integer floor division with rounding remainder allocated to coordinator (zero rounding discrepancy).
-10. **Data Control Language (DCL):** Oracle proxy authentication (`SYSTEM[SYNRIDE]`) securing credentials while preserving schema integrity.
+10. **Data Control Language (DCL) & Security Hardening:** Dedicated application account (`SYNRIDE_APP`) with least-privilege role (`RL_SYNRIDE_APP`), private synonyms, and revoked administrative proxy access.
 
 ---
 
@@ -78,14 +78,17 @@ SynRide_AG/
 │   ├── 02_views.sql
 │   ├── 03_procedures_and_functions.sql
 │   ├── 04_seed_route_fares.sql
-│   └── 05_verification_tests.sql
+│   ├── 05_verification_tests.sql
+│   └── 06_security_hardening_app_user.sql
 └── docs/                     # Academic documentation
+    ├── COMPLETE_PROJECT_DOCUMENTATION.md # Master project documentation & code audit
     ├── EER_DIAGRAM.md        # Conceptual EER model & Mermaid diagrams
     ├── RELATIONAL_SCHEMA.md  # 3NF schema, tables, and constraints
     ├── REQUIREMENTS_MATRIX.md# Traceability matrix for all requirements
     ├── DATABASE_OBJECT_INVENTORY.md # Catalog of all DB objects
     ├── API_DOCUMENTATION.md  # Complete OpenAPI / REST documentation
     ├── TEST_REPORT.md        # Test results log (21/21 PASS)
+    ├── INITIAL_AUDIT_AND_PLAN.md # Initial environment audit and roadmap
     └── DEMONSTRATION_GUIDE.md# Viva and project evaluation script
 ```
 
@@ -106,9 +109,9 @@ cd c:\Users\HP\Desktop\SynRide\SynRide_AG\backend
 pip install -r requirements.txt
 
 # Start FastAPI dev server
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8005 --reload
 ```
-- Interactive Swagger UI: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- Interactive Swagger UI: [http://127.0.0.1:8005/docs](http://127.0.0.1:8005/docs)
 
 ### Step 2: Frontend Setup
 ```powershell
@@ -160,6 +163,7 @@ npm run build
 ## 7. Project Documentation
 
 For comprehensive academic details, refer to the documents in `/docs`:
+- [Complete Master Project Documentation & Code Audit](file:///c:/Users/HP/Desktop/SynRide/SynRide_AG/docs/COMPLETE_PROJECT_DOCUMENTATION.md)
 - [EER Diagram & Specialization Modeling](file:///c:/Users/HP/Desktop/SynRide/SynRide_AG/docs/EER_DIAGRAM.md)
 - [Relational Schema & 3NF Normalization](file:///c:/Users/HP/Desktop/SynRide/SynRide_AG/docs/RELATIONAL_SCHEMA.md)
 - [Requirements Traceability Matrix](file:///c:/Users/HP/Desktop/SynRide/SynRide_AG/docs/REQUIREMENTS_MATRIX.md)

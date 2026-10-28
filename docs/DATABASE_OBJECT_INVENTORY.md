@@ -79,13 +79,13 @@ All procedures and functions are compiled and verified `VALID`.
 
 ## 4. Database User and Security Privileges
 
-- **Direct User:** `SYNRIDE`
-- **Proxy Authentication:**
-  ```sql
-  ALTER USER SYNRIDE GRANT CONNECT THROUGH SYSTEM;
-  ```
+- **Schema Owner:** `SYNRIDE`
+- **Application User:** `SYNRIDE_APP` (Dedicated non-DBA account)
+- **Application Role:** `RL_SYNRIDE_APP` (Least-privilege role granting DML on 18 tables, SELECT on 5 views, EXECUTE on 8 procedures)
+- **Private Synonyms:** 31 private synonyms defined under `SYNRIDE_APP` mapping transparently to `SYNRIDE.*`
+- **Connection Mode:** Direct Dedicated Connection (`SYNRIDE_APP`) with `current_schema = SYNRIDE`
+- **Proxy Status:** Legacy `SYSTEM` proxy revoked; `SYNRIDE_APP` authorized as dedicated application proxy if needed.
 - **Connection String:**
   ```
-  SYSTEM[SYNRIDE]/<pwd>@localhost:1521/FREEPDB1
+  SYNRIDE_APP/<pwd>@localhost:1521/FREEPDB1
   ```
-- **Table Privileges:** Full DML and DDL privileges on schema `SYNRIDE` restricted to authenticated application transactions.

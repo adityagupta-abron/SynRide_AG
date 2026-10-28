@@ -15,7 +15,8 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
     
     # Oracle Database Settings
-    DB_USER: str = "SYSTEM[SYNRIDE]"
+    DB_USER: str = "SYNRIDE_APP"
+    DB_SCHEMA: str = "SYNRIDE"
     DB_PASSWORD: str = ""
     DB_HOST: str = "localhost"
     DB_PORT: int = 1521

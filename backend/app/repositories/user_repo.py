@@ -134,8 +134,8 @@ class UserRepository:
                     )
                     VALUES (
                         :user_id, :email, :v_type, :otp_hash,
-                        SYSTIMESTAMP + NUMTODSINTERVAL(:expire_mins, 'MINUTE'),
-                        0, 'PENDING', SYSTIMESTAMP
+                        LOCALTIMESTAMP + NUMTODSINTERVAL(:expire_mins, 'MINUTE'),
+                        0, 'PENDING', LOCALTIMESTAMP
                     )
                 """, {
                     "user_id": user_id,
@@ -151,7 +151,8 @@ class UserRepository:
             with conn.cursor() as cur:
                 cur.execute("""
                     SELECT verification_id, user_id, email_address, verification_type,
-                           otp_hash, expires_at, failed_attempts, verification_status, created_at
+                           otp_hash, expires_at, failed_attempts, verification_status, created_at,
+                           CASE WHEN expires_at < LOCALTIMESTAMP THEN 1 ELSE 0 END AS is_expired
                     FROM USER_EMAIL_VERIFICATION
                     WHERE LOWER(email_address) = LOWER(:email)
                       AND verification_status IN ('PENDING', 'BLOCKED')

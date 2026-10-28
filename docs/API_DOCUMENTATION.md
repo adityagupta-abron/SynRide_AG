@@ -2,8 +2,8 @@
 
 The SynRide backend API is built with **FastAPI** in Python 3.12, providing high-performance, asynchronous endpoints connected directly to Oracle AI Database 26ai Free via `python-oracledb`.
 
-**Interactive API Documentation:** `http://127.0.0.1:8000/docs` (Swagger UI)  
-**Alternative Redoc:** `http://127.0.0.1:8000/redoc`  
+**Interactive API Documentation:** `http://127.0.0.1:8005/docs` (Swagger UI)  
+**Alternative Redoc:** `http://127.0.0.1:8005/redoc`  
 **Base API Prefix:** `/api`
 
 ---

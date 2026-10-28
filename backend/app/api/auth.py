@@ -108,8 +108,7 @@ def verify_otp(req: VerifyOTPRequest):
         )
 
     # 2. Check expiration
-    expires_at = otp_record.get("expires_at")
-    if expires_at and datetime.now() > (expires_at.replace(tzinfo=None) if expires_at.tzinfo else expires_at):
+    if otp_record.get("is_expired") == 1:
         raise OTPVerificationError("Verification code has expired. Please request a new code.")
 
     # 3. Validate OTP
